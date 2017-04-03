@@ -48,7 +48,7 @@ namespace MultipleAuthentication
                     {
                         SecurityTokenValidated = (context) =>
                         {
-                           S
+                           
                             return Task.FromResult(0);
                         },
                         AuthorizationCodeReceived = (context) =>

@@ -9,9 +9,10 @@ namespace MultipleAuthentication.Controllers
     public class PermissionsController : Controller
     {
         // GET: Permissions
-        public ActionResult Index()
+        public ActionResult UnauthorizedRequest()
         {
-            return View();
+            return View("~/Views/Permissions/AccessDenied.cshtml");
         }
+
     }
 }

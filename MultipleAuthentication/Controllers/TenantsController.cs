@@ -8,7 +8,8 @@ using System.Web;
 using System.Web.Mvc;
 using MultipleAuthentication.DatabaseContext;
 using MultipleAuthentication.Extensions;
-
+using MultipleAuthentication.Constants;
+using MultipleAuthentication.Models;
 
 namespace MultipleAuthentication.Controllers
 {
@@ -32,7 +33,7 @@ namespace MultipleAuthentication.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Tenant tenant = db.Tenants.Find(id);
+            MultipleAuthentication.DatabaseContext.Tenant tenant = db.Tenants.Find(id);
             if (tenant == null)
             {
                 return HttpNotFound();
@@ -51,7 +52,7 @@ namespace MultipleAuthentication.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "TenantID,TenantName,ClientID,ClientSecret,URL,Created,Modified,CreatedBy,ModifiedBy")] Tenant tenant)
+        public ActionResult Create([Bind(Include = "TenantID,TenantName,ClientID,ClientSecret,URL,Created,Modified,CreatedBy,ModifiedBy")] DatabaseContext.Tenant tenant)
         {
             if (ModelState.IsValid)
             {
@@ -68,8 +69,11 @@ namespace MultipleAuthentication.Controllers
                 tenant.TenantID = tenantModel.TenantID;
                 db.Tenants.Add(tenant);
                     db.SaveChanges();
+
                 
-                return RedirectToAction("Index");
+                //After successfully addition of tenant details, we are going to ask admin consent for the same
+
+                return Redirect("https://login.microsoftonline.com/" + tenantModel.TenantID + "/oauth2/authorize?client_id=" + Startup.clientId + "&response_type=code&redirect_uri=" + ActiveDirectoryConstants.GetCurrentApplicationUrl + "&nonce=1234&resource=https://graph.windows.net&prompt=admin_consent");
             }
 
             return View(tenant);
@@ -82,7 +86,7 @@ namespace MultipleAuthentication.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Tenant tenant = db.Tenants.Find(id);
+          MultipleAuthentication.DatabaseContext.Tenant tenant = db.Tenants.Find(id);
             if (tenant == null)
             {
                 return HttpNotFound();
@@ -95,7 +99,7 @@ namespace MultipleAuthentication.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "TenantID,TenantName,ClientID,ClientSecret,URL,Created,Modified,CreatedBy,ModifiedBy")] Tenant tenant)
+        public ActionResult Edit([Bind(Include = "TenantID,TenantName,ClientID,ClientSecret,URL,Created,Modified,CreatedBy,ModifiedBy")] MultipleAuthentication.DatabaseContext.Tenant tenant)
         {
             if (ModelState.IsValid)
             {
@@ -115,7 +119,7 @@ namespace MultipleAuthentication.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Tenant tenant = db.Tenants.Find(id);
+          MultipleAuthentication.DatabaseContext.Tenant tenant = db.Tenants.Find(id);
             if (tenant == null)
             {
                 return HttpNotFound();
@@ -128,7 +132,7 @@ namespace MultipleAuthentication.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(string id)
         {
-            Tenant tenant = db.Tenants.Find(id);
+          MultipleAuthentication.DatabaseContext.Tenant tenant = db.Tenants.Find(id);
             db.Tenants.Remove(tenant);
             db.SaveChanges();
             return RedirectToAction("Index");
