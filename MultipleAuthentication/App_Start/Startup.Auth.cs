@@ -48,12 +48,12 @@ namespace MultipleAuthentication
                     {
                         SecurityTokenValidated = (context) =>
                         {
-                           System.Diagnostics.Debugger.Break();
+                           S
                             return Task.FromResult(0);
                         },
                         AuthorizationCodeReceived = (context) =>
                         {
-                           System.Diagnostics.Debugger.Break();
+                           
                             var code = context.Code;
 
                             ClientCredential credential = new ClientCredential(clientId, appKey);
@@ -67,7 +67,7 @@ namespace MultipleAuthentication
                         },
                         AuthenticationFailed = (context) =>
                         {
-                            System.Diagnostics.Debugger.Break();
+                            
                             context.OwinContext.Response.Redirect("/Home/Error");
                             context.HandleResponse(); // Suppress the exception
                             return Task.FromResult(0);
