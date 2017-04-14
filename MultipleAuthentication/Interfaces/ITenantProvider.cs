@@ -9,6 +9,6 @@ namespace MultipleAuthentication.Interfaces
 {
     interface ITenantProvider
     {
-        
+         Tenant GetTenantDetails();
     }
 }

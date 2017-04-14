@@ -7,130 +7,121 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using MultipleAuthentication.DatabaseContext;
-using MultipleAuthentication.Extensions;
-using System.Web.Security;
-using System.Security.Claims;
 using MultipleAuthentication.Helper;
 
 namespace MultipleAuthentication.Controllers
 {
-    public class SectionsController : Controller
+    public class NewsLettersController : Controller
     {
         private LoggingEntities1 db = new LoggingEntities1();
         private string tenantID = new TenantProvider().GetTenantDetails().TenantID;
-        // GET: Sections
+        // GET: NewsLetters
         public ActionResult Index()
         {
-            
-            var sections = db.Sections.Include(s => s.Tenant);
-            return View(sections.Where(section=>section.TenantID==tenantID));
+            var newsLetters = db.NewsLetters.Include(n => n.Section);
+          newsLetters = newsLetters.Select(x => x).Where(y => y.Section.TenantID == tenantID);
+            return View(newsLetters.ToList());
         }
 
-        // GET: Sections/Details/5
+        // GET: NewsLetters/Details/5
         public ActionResult Details(int? id)
         {
-            var roles = new AuthorizationStoreRoleProvider().GetAllRoles();
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Section section = db.Sections.Find(id);
-            if (section == null)
+            NewsLetter newsLetter = db.NewsLetters.Find(id);
+            if (newsLetter == null)
             {
                 return HttpNotFound();
             }
-            return View(section);
+            return View(newsLetter);
         }
 
-        // GET: Sections/Create
+        // GET: NewsLetters/Create
         public ActionResult Create()
         {
-            ViewBag.TenantID = new SelectList(db.Tenants.Where(x=>x.TenantID== tenantID), "TenantID", "TenantName");
+            ViewBag.SectionID = new SelectList(db.Sections.Where(items=>items.TenantID==tenantID), "SectionID", "SectionName");
             return View();
         }
 
-        // POST: Sections/Create
+        // POST: NewsLetters/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "SectionName,SectionDescription,Created,Modified,CreatedBy,ModifiedBy,TenantID,Priority,SectionID")] Section section)
+        public ActionResult Create([Bind(Include = "HeadLine,NewsDescription,ActualLink,Created,Modified,CreatedBy,ModifiedBy,SectionID,Priority,ID")] NewsLetter newsLetter)
         {
             if (ModelState.IsValid)
             {
-                section.Created = DateTime.Now;
-                section.CreatedBy = User.Identity.Name;
-                section.Modified = DateTime.Now;
-                section.ModifiedBy = User.Identity.Name;
-               
-
-                db.Sections.Add(section);
+                newsLetter.Created = DateTime.Now;
+                newsLetter.Modified = DateTime.Now;
+                newsLetter.CreatedBy = User.Identity.Name;
+                newsLetter.ModifiedBy = User.Identity.Name;
+                db.NewsLetters.Add(newsLetter);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.TenantID = new SelectList(db.Tenants, "TenantID", "TenantName", section.TenantID);
-            return View(section);
+            ViewBag.SectionID = new SelectList(db.Sections, "SectionID", "SectionName", newsLetter.SectionID);
+            return View(newsLetter);
         }
 
-        // GET: Sections/Edit/5
+        // GET: NewsLetters/Edit/5
         public ActionResult Edit(int? id)
         {
-            var allRoles = User.GetRoles();
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Section section = db.Sections.Find(id);
-            if (section == null)
+            NewsLetter newsLetter = db.NewsLetters.Find(id);
+            if (newsLetter == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.TenantID = new SelectList(db.Tenants, "TenantID", "TenantName", section.TenantID);
-            return View(section);
+            ViewBag.SectionID = new SelectList(db.Sections, "SectionID", "SectionName", newsLetter.SectionID);
+            return View(newsLetter);
         }
 
-        // POST: Sections/Edit/5
+        // POST: NewsLetters/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "SectionName,SectionDescription,Created,Modified,CreatedBy,ModifiedBy,TenantID,Priority,SectionID")] Section section)
+        public ActionResult Edit([Bind(Include = "HeadLine,NewsDescription,ActualLink,Created,Modified,CreatedBy,ModifiedBy,SectionID,Priority,ID")] NewsLetter newsLetter)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(section).State = EntityState.Modified;
-                section.Modified = DateTime.Now;
-                section.ModifiedBy = User.Identity.Name;
+                db.Entry(newsLetter).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.TenantID = new SelectList(db.Tenants, "TenantID", "TenantName", section.TenantID);
-            return View(section);
+            ViewBag.SectionID = new SelectList(db.Sections, "SectionID", "SectionName", newsLetter.SectionID);
+            return View(newsLetter);
         }
 
-        // GET: Sections/Delete/5
+        // GET: NewsLetters/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Section section = db.Sections.Find(id);
-            if (section == null)
+            NewsLetter newsLetter = db.NewsLetters.Find(id);
+            if (newsLetter == null)
             {
                 return HttpNotFound();
             }
-            return View(section);
+            return View(newsLetter);
         }
 
-        // POST: Sections/Delete/5
+        // POST: NewsLetters/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Section section = db.Sections.Find(id);
-            db.Sections.Remove(section);
+            NewsLetter newsLetter = db.NewsLetters.Find(id);
+            db.NewsLetters.Remove(newsLetter);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

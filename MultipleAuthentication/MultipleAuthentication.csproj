@@ -243,6 +243,7 @@
     <Compile Include="Constants\ActiveDirectoryConstants.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\NewsLettersController.cs" />
     <Compile Include="Controllers\PermissionsController.cs" />
     <Compile Include="Controllers\SectionsController.cs" />
     <Compile Include="Controllers\TenantsController.cs" />
@@ -278,7 +279,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helper\GraphApiHelper.cs" />
-    <Compile Include="Interfaces\AzureAuthenticationProvider.cs" />
+    <Compile Include="Helper\TenantProvider.cs" />
     <Compile Include="Interfaces\ITenantProvider.cs" />
     <Compile Include="Models\AdalTokenCache.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
@@ -364,6 +365,11 @@
     <Content Include="Views\Sections\Index.cshtml" />
     <Content Include="Web.config.backup.1" />
     <Content Include="Views\Permissions\AccessDenied.cshtml" />
+    <Content Include="Views\NewsLetters\Create.cshtml" />
+    <Content Include="Views\NewsLetters\Delete.cshtml" />
+    <Content Include="Views\NewsLetters\Details.cshtml" />
+    <Content Include="Views\NewsLetters\Edit.cshtml" />
+    <Content Include="Views\NewsLetters\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

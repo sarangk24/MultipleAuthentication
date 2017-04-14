@@ -23,18 +23,19 @@ namespace MultipleAuthentication.Extensions
             //there is no identityprovider for test users in onmicrosoft domain
             var claim = claims.FirstOrDefault(c => c.Type.Equals("http://schemas.microsoft.com/identity/claims/identityprovider"));
             if (claim != null)
+            {
                 domain = claim.Value;
+            }
             else
             {
-                claim=claims.FirstOrDefault(c => c.Type.Equals("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"));
-                domain = claim.Value.Substring(claim.Value.IndexOf('@')+1);
+                claim = claims.FirstOrDefault(c => c.Type.Equals("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"));
+                domain = claim.Value.Substring(claim.Value.IndexOf('@') + 1);
             }
+            //tenant id is appended with the STS.windows.net
             var tenantID = claims.FirstOrDefault(c => c.Type.Equals("iss")).Value.TrimEnd('/');
             tenantID = tenantID.Substring(tenantID.LastIndexOf('/') + 1);
             var tenantName = domain.Substring(0, domain.LastIndexOf('.'));
             Tenant tenant = new Tenant(tenantID, domain, tenantName);
-
-            //var allUsers = users.Result.CurrentPage.Any();
             return tenant;
         }
 
