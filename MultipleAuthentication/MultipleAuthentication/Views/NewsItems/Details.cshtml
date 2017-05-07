@@ -1,0 +1,98 @@
+﻿@model MultipleAuthentication.DatabaseContext.NewsItem
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Details</title>
+</head>
+<body>
+    <div>
+        <h4>NewsItem</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.NewsItemName)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.NewsItemName)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.NewsItemDescription)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.NewsItemDescription)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.ActualLink)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.ActualLink)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.Visible)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Visible)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.Created)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Created)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.Modified)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Modified)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.CreatedBy)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.CreatedBy)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.ModifiedBy)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.ModifiedBy)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.Section.SectionName)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Section.SectionName)
+            </dd>
+    
+        </dl>
+    </div>
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.NewsItemID }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+</body>
+</html>

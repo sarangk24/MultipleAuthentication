@@ -1,0 +1,343 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="NewsLetterModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="NewsItems">
+          <Key>
+            <PropertyRef Name="NewsItemID" />
+          </Key>
+          <Property Name="NewsItemID" Type="int" Nullable="false" />
+          <Property Name="NewsItemName" Type="nvarchar" MaxLength="100" />
+          <Property Name="NewsItemDescription" Type="nvarchar(max)" />
+          <Property Name="ActualLink" Type="nvarchar(max)" />
+          <Property Name="Visible" Type="bit" />
+          <Property Name="Created" Type="datetime" />
+          <Property Name="Modified" Type="datetime" />
+          <Property Name="CreatedBy" Type="nvarchar" MaxLength="100" />
+          <Property Name="ModifiedBy" Type="nvarchar" MaxLength="100" />
+          <Property Name="SectionID" Type="int" />
+        </EntityType>
+        <EntityType Name="NewsLetter">
+          <Key>
+            <PropertyRef Name="NewsLetterID" />
+          </Key>
+          <Property Name="NewsLetterID" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" />
+          <Property Name="Description" Type="nvarchar" MaxLength="100" />
+          <Property Name="Visible" Type="bit" />
+          <Property Name="Created" Type="datetime" />
+          <Property Name="Modified" Type="datetime" />
+          <Property Name="CreatedBy" Type="nvarchar" MaxLength="100" />
+          <Property Name="ModifiedBy" Type="nvarchar" MaxLength="100" />
+          <Property Name="TenantID" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="Section">
+          <Key>
+            <PropertyRef Name="SectionID" />
+          </Key>
+          <Property Name="SectionID" Type="int" Nullable="false" />
+          <Property Name="SectionName" Type="nvarchar" MaxLength="100" />
+          <Property Name="SectionDescription" Type="nvarchar(max)" />
+          <Property Name="Visible" Type="bit" />
+          <Property Name="Created" Type="datetime" />
+          <Property Name="Modified" Type="datetime" />
+          <Property Name="CreatedBy" Type="nvarchar" MaxLength="100" />
+          <Property Name="ModifiedBy" Type="nvarchar" MaxLength="100" />
+          <Property Name="NewsLetterID" Type="int" />
+        </EntityType>
+        <EntityType Name="Tenant">
+          <Key>
+            <PropertyRef Name="TenantID" />
+          </Key>
+          <Property Name="TenantID" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="TenantName" Type="nvarchar" MaxLength="100" />
+          <Property Name="ClientID" Type="nvarchar" MaxLength="100" />
+          <Property Name="ClientSecret" Type="nvarchar" MaxLength="100" />
+          <Property Name="URL" Type="nvarchar(max)" />
+          <Property Name="Created" Type="datetime" />
+          <Property Name="CreateBy" Type="nvarchar(max)" />
+          <Property Name="Modified" Type="datetime" />
+          <Property Name="ModifiedBy" Type="nvarchar(max)" />
+        </EntityType>
+        <Association Name="FK_NewsLetter_Tenant">
+          <End Role="Tenant" Type="Self.Tenant" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="NewsLetter" Type="Self.NewsLetter" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tenant">
+              <PropertyRef Name="TenantID" />
+            </Principal>
+            <Dependent Role="NewsLetter">
+              <PropertyRef Name="TenantID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Section_NewsLetter">
+          <End Role="NewsLetter" Type="Self.NewsLetter" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Section" Type="Self.Section" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NewsLetter">
+              <PropertyRef Name="NewsLetterID" />
+            </Principal>
+            <Dependent Role="Section">
+              <PropertyRef Name="NewsLetterID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Table_Sections">
+          <End Role="Section" Type="Self.Section" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="NewsItems" Type="Self.NewsItems" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Section">
+              <PropertyRef Name="SectionID" />
+            </Principal>
+            <Dependent Role="NewsItems">
+              <PropertyRef Name="SectionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="NewsLetterModelStoreContainer">
+          <EntitySet Name="NewsItems" EntityType="Self.NewsItems" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="NewsLetter" EntityType="Self.NewsLetter" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Section" EntityType="Self.Section" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tenant" EntityType="Self.Tenant" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_NewsLetter_Tenant" Association="Self.FK_NewsLetter_Tenant">
+            <End Role="Tenant" EntitySet="Tenant" />
+            <End Role="NewsLetter" EntitySet="NewsLetter" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Section_NewsLetter" Association="Self.FK_Section_NewsLetter">
+            <End Role="NewsLetter" EntitySet="NewsLetter" />
+            <End Role="Section" EntitySet="Section" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Table_Sections" Association="Self.FK_Table_Sections">
+            <End Role="Section" EntitySet="Section" />
+            <End Role="NewsItems" EntitySet="NewsItems" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="NewsLetterModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="NewsItem">
+          <Key>
+            <PropertyRef Name="NewsItemID" />
+          </Key>
+          <Property Name="NewsItemID" Type="Int32" Nullable="false" />
+          <Property Name="NewsItemName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="NewsItemDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ActualLink" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Visible" Type="Boolean" />
+          <Property Name="Created" Type="DateTime" Precision="3" />
+          <Property Name="Modified" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="SectionID" Type="Int32" />
+          <NavigationProperty Name="Section" Relationship="Self.FK_Table_Sections" FromRole="NewsItems" ToRole="Section" />
+        </EntityType>
+        <EntityType Name="NewsLetter">
+          <Key>
+            <PropertyRef Name="NewsLetterID" />
+          </Key>
+          <Property Name="NewsLetterID" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Visible" Type="Boolean" />
+          <Property Name="Created" Type="DateTime" Precision="3" />
+          <Property Name="Modified" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="TenantID" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Tenant" Relationship="Self.FK_NewsLetter_Tenant" FromRole="NewsLetter" ToRole="Tenant" />
+          <NavigationProperty Name="Sections" Relationship="Self.FK_Section_NewsLetter" FromRole="NewsLetter" ToRole="Section" />
+        </EntityType>
+        <EntityType Name="Section">
+          <Key>
+            <PropertyRef Name="SectionID" />
+          </Key>
+          <Property Name="SectionID" Type="Int32" Nullable="false" />
+          <Property Name="SectionName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="SectionDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Visible" Type="Boolean" />
+          <Property Name="Created" Type="DateTime" Precision="3" />
+          <Property Name="Modified" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="NewsLetterID" Type="Int32" />
+          <NavigationProperty Name="NewsItems" Relationship="Self.FK_Table_Sections" FromRole="Section" ToRole="NewsItems" />
+          <NavigationProperty Name="NewsLetter" Relationship="Self.FK_Section_NewsLetter" FromRole="Section" ToRole="NewsLetter" />
+        </EntityType>
+        <EntityType Name="Tenant">
+          <Key>
+            <PropertyRef Name="TenantID" />
+          </Key>
+          <Property Name="TenantID" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TenantName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ClientID" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ClientSecret" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="URL" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Created" Type="DateTime" Precision="3" />
+          <Property Name="CreateBy" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Modified" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="NewsLetters" Relationship="Self.FK_NewsLetter_Tenant" FromRole="Tenant" ToRole="NewsLetter" />
+        </EntityType>
+        <Association Name="FK_Table_Sections">
+          <End Role="Section" Type="Self.Section" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="NewsItems" Type="Self.NewsItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Section">
+              <PropertyRef Name="SectionID" />
+            </Principal>
+            <Dependent Role="NewsItems">
+              <PropertyRef Name="SectionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_NewsLetter_Tenant">
+          <End Role="Tenant" Type="Self.Tenant" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="NewsLetter" Type="Self.NewsLetter" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tenant">
+              <PropertyRef Name="TenantID" />
+            </Principal>
+            <Dependent Role="NewsLetter">
+              <PropertyRef Name="TenantID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Section_NewsLetter">
+          <End Role="NewsLetter" Type="Self.NewsLetter" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Section" Type="Self.Section" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NewsLetter">
+              <PropertyRef Name="NewsLetterID" />
+            </Principal>
+            <Dependent Role="Section">
+              <PropertyRef Name="NewsLetterID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="NewsLetterEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="NewsItems" EntityType="Self.NewsItem" />
+          <EntitySet Name="NewsLetters" EntityType="Self.NewsLetter" />
+          <EntitySet Name="Sections" EntityType="Self.Section" />
+          <EntitySet Name="Tenants" EntityType="Self.Tenant" />
+          <AssociationSet Name="FK_Table_Sections" Association="Self.FK_Table_Sections">
+            <End Role="Section" EntitySet="Sections" />
+            <End Role="NewsItems" EntitySet="NewsItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_NewsLetter_Tenant" Association="Self.FK_NewsLetter_Tenant">
+            <End Role="Tenant" EntitySet="Tenants" />
+            <End Role="NewsLetter" EntitySet="NewsLetters" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Section_NewsLetter" Association="Self.FK_Section_NewsLetter">
+            <End Role="NewsLetter" EntitySet="NewsLetters" />
+            <End Role="Section" EntitySet="Sections" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="NewsLetterModelStoreContainer" CdmEntityContainer="NewsLetterEntities">
+          <EntitySetMapping Name="NewsItems">
+            <EntityTypeMapping TypeName="NewsLetterModel.NewsItem">
+              <MappingFragment StoreEntitySet="NewsItems">
+                <ScalarProperty Name="NewsItemID" ColumnName="NewsItemID" />
+                <ScalarProperty Name="NewsItemName" ColumnName="NewsItemName" />
+                <ScalarProperty Name="NewsItemDescription" ColumnName="NewsItemDescription" />
+                <ScalarProperty Name="ActualLink" ColumnName="ActualLink" />
+                <ScalarProperty Name="Visible" ColumnName="Visible" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="Modified" ColumnName="Modified" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="SectionID" ColumnName="SectionID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NewsLetters">
+            <EntityTypeMapping TypeName="NewsLetterModel.NewsLetter">
+              <MappingFragment StoreEntitySet="NewsLetter">
+                <ScalarProperty Name="NewsLetterID" ColumnName="NewsLetterID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Visible" ColumnName="Visible" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="Modified" ColumnName="Modified" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="TenantID" ColumnName="TenantID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Sections">
+            <EntityTypeMapping TypeName="NewsLetterModel.Section">
+              <MappingFragment StoreEntitySet="Section">
+                <ScalarProperty Name="SectionID" ColumnName="SectionID" />
+                <ScalarProperty Name="SectionName" ColumnName="SectionName" />
+                <ScalarProperty Name="SectionDescription" ColumnName="SectionDescription" />
+                <ScalarProperty Name="Visible" ColumnName="Visible" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="Modified" ColumnName="Modified" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="NewsLetterID" ColumnName="NewsLetterID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tenants">
+            <EntityTypeMapping TypeName="NewsLetterModel.Tenant">
+              <MappingFragment StoreEntitySet="Tenant">
+                <ScalarProperty Name="TenantID" ColumnName="TenantID" />
+                <ScalarProperty Name="TenantName" ColumnName="TenantName" />
+                <ScalarProperty Name="ClientID" ColumnName="ClientID" />
+                <ScalarProperty Name="ClientSecret" ColumnName="ClientSecret" />
+                <ScalarProperty Name="URL" ColumnName="URL" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="CreateBy" ColumnName="CreateBy" />
+                <ScalarProperty Name="Modified" ColumnName="Modified" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

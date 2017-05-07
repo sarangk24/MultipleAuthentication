@@ -1,0 +1,90 @@
+﻿@model MultipleAuthentication.DatabaseContext.Tenant
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Details</title>
+</head>
+<body>
+    <div>
+        <h4>Tenant</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.TenantName)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.TenantName)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.ClientID)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.ClientID)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.ClientSecret)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.ClientSecret)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.URL)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.URL)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.Created)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Created)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.CreateBy)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.CreateBy)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.Modified)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Modified)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.ModifiedBy)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.ModifiedBy)
+            </dd>
+    
+        </dl>
+    </div>
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.TenantID }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+</body>
+</html>
