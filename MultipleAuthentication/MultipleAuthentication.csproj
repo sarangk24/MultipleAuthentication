@@ -243,33 +243,38 @@
     <Compile Include="Constants\ActiveDirectoryConstants.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\NewsItemsController.cs" />
+    <Compile Include="Controllers\NewsLettersController.cs" />
     <Compile Include="Controllers\PermissionsController.cs" />
     <Compile Include="Controllers\SectionsController.cs" />
     <Compile Include="Controllers\TenantsController.cs" />
     <Compile Include="Controllers\UserProfileController.cs" />
-    <Compile Include="DatabaseContext\Model.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Model.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DatabaseContext\Model.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DatabaseContext\Model.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Model.edmx</DependentUpon>
+    <Compile Include="DatabaseContext\NewsItem.cs">
+      <DependentUpon>NewsLetterSchemaDesign.tt</DependentUpon>
     </Compile>
     <Compile Include="DatabaseContext\NewsLetter.cs">
-      <DependentUpon>Model.tt</DependentUpon>
+      <DependentUpon>NewsLetterSchemaDesign.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseContext\NewsLetterSchemaDesign.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>NewsLetterSchemaDesign.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseContext\NewsLetterSchemaDesign.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>NewsLetterSchemaDesign.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseContext\NewsLetterSchemaDesign.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>NewsLetterSchemaDesign.edmx</DependentUpon>
     </Compile>
     <Compile Include="DatabaseContext\Section.cs">
-      <DependentUpon>Model.tt</DependentUpon>
+      <DependentUpon>NewsLetterSchemaDesign.tt</DependentUpon>
     </Compile>
     <Compile Include="DatabaseContext\Tenant.cs">
-      <DependentUpon>Model.tt</DependentUpon>
+      <DependentUpon>NewsLetterSchemaDesign.tt</DependentUpon>
     </Compile>
     <Compile Include="ErrorHandlers\ApplicationErrorHandler.cs" />
     <Compile Include="Extensions\ClaimsIdentityExtensions.cs" />
@@ -278,7 +283,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helper\GraphApiHelper.cs" />
-    <Compile Include="Interfaces\AzureAuthenticationProvider.cs" />
+    <Compile Include="Helper\TenantProvider.cs" />
     <Compile Include="Interfaces\ITenantProvider.cs" />
     <Compile Include="Models\AdalTokenCache.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
@@ -289,15 +294,15 @@
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
-    <Content Include="DatabaseContext\Model.Context.tt">
+    <Content Include="DatabaseContext\NewsLetterSchemaDesign.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>Model.edmx</DependentUpon>
-      <LastGenOutput>Model.Context.cs</LastGenOutput>
+      <DependentUpon>NewsLetterSchemaDesign.edmx</DependentUpon>
+      <LastGenOutput>NewsLetterSchemaDesign.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="DatabaseContext\Model.tt">
+    <Content Include="DatabaseContext\NewsLetterSchemaDesign.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>Model.edmx</DependentUpon>
-      <LastGenOutput>Model.cs</LastGenOutput>
+      <DependentUpon>NewsLetterSchemaDesign.edmx</DependentUpon>
+      <LastGenOutput>NewsLetterSchemaDesign.cs</LastGenOutput>
     </Content>
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -310,15 +315,15 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <EntityDeploy Include="DatabaseContext\Model.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>Model.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="DatabaseContext\Model.edmx.diagram">
-      <DependentUpon>Model.edmx</DependentUpon>
-    </Content>
     <Content Include="Metadata\deploymentTemplates\apiappconfig.azureresource.json" />
     <Content Include="apiapp.json" />
+    <EntityDeploy Include="DatabaseContext\NewsLetterSchemaDesign.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>NewsLetterSchemaDesign.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="DatabaseContext\NewsLetterSchemaDesign.edmx.diagram">
+      <DependentUpon>NewsLetterSchemaDesign.edmx</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -352,18 +357,29 @@
     <Content Include="Views\UserProfile\Index.cshtml" />
     <Content Include="Views\UserProfile\Relogin.cshtml" />
     <Content Include="Service References\Application Insights\ConnectedService.json" />
+    <Content Include="Web.config.backup.1" />
+    <Content Include="Views\Permissions\AccessDenied.cshtml" />
     <Content Include="Views\Tenants\Create.cshtml" />
     <Content Include="Views\Tenants\Delete.cshtml" />
     <Content Include="Views\Tenants\Details.cshtml" />
     <Content Include="Views\Tenants\Edit.cshtml" />
     <Content Include="Views\Tenants\Index.cshtml" />
+    <Content Include="Views\NewsLetters\Create.cshtml" />
+    <Content Include="Views\NewsLetters\Delete.cshtml" />
+    <Content Include="Views\NewsLetters\Details.cshtml" />
+    <Content Include="Views\NewsLetters\Edit.cshtml" />
+    <Content Include="Views\NewsLetters\Index.cshtml" />
     <Content Include="Views\Sections\Create.cshtml" />
     <Content Include="Views\Sections\Delete.cshtml" />
     <Content Include="Views\Sections\Details.cshtml" />
     <Content Include="Views\Sections\Edit.cshtml" />
     <Content Include="Views\Sections\Index.cshtml" />
-    <Content Include="Web.config.backup.1" />
-    <Content Include="Views\Permissions\AccessDenied.cshtml" />
+    <Content Include="Views\NewsItems\Create.cshtml" />
+    <Content Include="Views\NewsItems\Delete.cshtml" />
+    <Content Include="Views\NewsItems\Details.cshtml" />
+    <Content Include="Views\NewsItems\Edit.cshtml" />
+    <Content Include="Views\NewsItems\Index.cshtml" />
+    <Content Include="Views\Home\Error.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

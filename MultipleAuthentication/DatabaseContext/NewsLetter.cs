@@ -14,17 +14,24 @@ namespace MultipleAuthentication.DatabaseContext
     
     public partial class NewsLetter
     {
-        public string HeadLine { get; set; }
-        public string NewsDescription { get; set; }
-        public string ActualLink { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public NewsLetter()
+        {
+            this.Sections = new HashSet<Section>();
+        }
+    
+        public int NewsLetterID { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public Nullable<bool> Visible { get; set; }
         public Nullable<System.DateTime> Created { get; set; }
         public Nullable<System.DateTime> Modified { get; set; }
         public string CreatedBy { get; set; }
         public string ModifiedBy { get; set; }
-        public Nullable<int> SectionID { get; set; }
-        public Nullable<int> Priority { get; set; }
-        public int ID { get; set; }
+        public string TenantID { get; set; }
     
-        public virtual Section Section { get; set; }
+        public virtual Tenant Tenant { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Section> Sections { get; set; }
     }
 }

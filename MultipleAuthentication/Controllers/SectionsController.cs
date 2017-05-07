@@ -7,29 +7,23 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using MultipleAuthentication.DatabaseContext;
-using MultipleAuthentication.Extensions;
-using System.Web.Security;
-using System.Security.Claims;
 
 namespace MultipleAuthentication.Controllers
 {
     public class SectionsController : Controller
     {
-        private LoggingEntities1 db = new LoggingEntities1();
+        private NewsLetterEntities db = new NewsLetterEntities();
 
         // GET: Sections
         public ActionResult Index()
         {
-            var allClaims = ((System.Security.Claims.ClaimsIdentity)User.Identity).Claims;
-            Models.Tenant tenantModel = allClaims.GetTenantDetails();
-            var sections = db.Sections.Include(s => s.Tenant);
-            return View(sections.Where(section=>section.TenantID==tenantModel.TenantID).ToList());
+            var sections = db.Sections.Include(s => s.NewsLetter);
+            return View(sections.ToList());
         }
 
         // GET: Sections/Details/5
         public ActionResult Details(int? id)
         {
-            var roles = new AuthorizationStoreRoleProvider().GetAllRoles();
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -45,7 +39,7 @@ namespace MultipleAuthentication.Controllers
         // GET: Sections/Create
         public ActionResult Create()
         {
-            ViewBag.TenantID = new SelectList(db.Tenants, "TenantID", "TenantName");
+            ViewBag.NewsLetterID = new SelectList(db.NewsLetters, "NewsLetterID", "Name");
             return View();
         }
 
@@ -54,29 +48,22 @@ namespace MultipleAuthentication.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "SectionName,SectionDescription,Created,Modified,CreatedBy,ModifiedBy,TenantID,Priority,SectionID")] Section section)
+        public ActionResult Create([Bind(Include = "SectionID,SectionName,SectionDescription,Visible,Created,Modified,CreatedBy,ModifiedBy,NewsLetterID")] Section section)
         {
             if (ModelState.IsValid)
             {
-                section.Created = DateTime.Now;
-                section.CreatedBy = User.Identity.Name;
-                section.Modified = DateTime.Now;
-                section.ModifiedBy = User.Identity.Name;
-               
-
                 db.Sections.Add(section);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.TenantID = new SelectList(db.Tenants, "TenantID", "TenantName", section.TenantID);
+            ViewBag.NewsLetterID = new SelectList(db.NewsLetters, "NewsLetterID", "Name", section.NewsLetterID);
             return View(section);
         }
 
         // GET: Sections/Edit/5
         public ActionResult Edit(int? id)
         {
-            var allRoles = User.GetRoles();
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -86,7 +73,7 @@ namespace MultipleAuthentication.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.TenantID = new SelectList(db.Tenants, "TenantID", "TenantName", section.TenantID);
+            ViewBag.NewsLetterID = new SelectList(db.NewsLetters, "NewsLetterID", "Name", section.NewsLetterID);
             return View(section);
         }
 
@@ -95,17 +82,15 @@ namespace MultipleAuthentication.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "SectionName,SectionDescription,Created,Modified,CreatedBy,ModifiedBy,TenantID,Priority,SectionID")] Section section)
+        public ActionResult Edit([Bind(Include = "SectionID,SectionName,SectionDescription,Visible,Created,Modified,CreatedBy,ModifiedBy,NewsLetterID")] Section section)
         {
             if (ModelState.IsValid)
             {
                 db.Entry(section).State = EntityState.Modified;
-                section.Modified = DateTime.Now;
-                section.ModifiedBy = User.Identity.Name;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.TenantID = new SelectList(db.Tenants, "TenantID", "TenantName", section.TenantID);
+            ViewBag.NewsLetterID = new SelectList(db.NewsLetters, "NewsLetterID", "Name", section.NewsLetterID);
             return View(section);
         }
 

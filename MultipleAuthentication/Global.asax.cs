@@ -19,6 +19,21 @@ namespace MultipleAuthentication
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
         }
-        
+
+        protected void Application_Error(object sender, EventArgs e)
+        {
+            Exception exception = Server.GetLastError();
+            Response.Clear();
+
+
+
+            if (exception != null)
+            {
+                // clear error on server
+                Server.ClearError();
+
+                Response.Redirect(String.Format("~/Home/{0}/?message={1}", "Error", exception.Message));
+            }
+        }
     }
 }

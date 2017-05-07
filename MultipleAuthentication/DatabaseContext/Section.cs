@@ -17,21 +17,21 @@ namespace MultipleAuthentication.DatabaseContext
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Section()
         {
-            this.NewsLetters = new HashSet<NewsLetter>();
+            this.NewsItems = new HashSet<NewsItem>();
         }
     
+        public int SectionID { get; set; }
         public string SectionName { get; set; }
         public string SectionDescription { get; set; }
+        public Nullable<bool> Visible { get; set; }
         public Nullable<System.DateTime> Created { get; set; }
         public Nullable<System.DateTime> Modified { get; set; }
         public string CreatedBy { get; set; }
         public string ModifiedBy { get; set; }
-        public string TenantID { get; set; }
-        public Nullable<int> Priority { get; set; }
-        public int SectionID { get; set; }
+        public Nullable<int> NewsLetterID { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<NewsLetter> NewsLetters { get; set; }
-        public virtual Tenant Tenant { get; set; }
+        public virtual ICollection<NewsItem> NewsItems { get; set; }
+        public virtual NewsLetter NewsLetter { get; set; }
     }
 }

@@ -14,10 +14,8 @@ namespace MultipleAuthentication.Controllers
             return View();
         }
 
-        public ActionResult About()
+        public ActionResult Error()
         {
-            ViewBag.Message = "Your application description page.";
-
             return View();
         }
 

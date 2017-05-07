@@ -66,17 +66,26 @@ namespace MultipleAuthentication.Extensions
             if (isCached != null)
             {
                 if (authorize == false)
-                    HttpContext.Current.Response.Redirect("~/Views/Shared/Error.cshtml");
+                {
+                    filterContext.Result = new RedirectToRouteResult(
+                              new RouteValueDictionary
+                              {
+                                   { "action", "UnauthorizedRequest" },
+                                   { "controller", "Permissions" }
+                              });
+                }
             }
 
             HttpRuntime.Cache.Insert(key, true);
             if (authorize == false)
+            {
                 filterContext.Result = new RedirectToRouteResult(
                                new RouteValueDictionary
                                {
-                                   { "action", "Index" },
-                                   { "controller", "Sections" }
+                                   { "action", "UnauthorizedRequest" },
+                                   { "controller", "Permissions" }
                                });
+            }
 
         }
 

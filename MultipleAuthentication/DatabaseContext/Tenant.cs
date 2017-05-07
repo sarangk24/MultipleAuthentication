@@ -17,7 +17,7 @@ namespace MultipleAuthentication.DatabaseContext
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Tenant()
         {
-            this.Sections = new HashSet<Section>();
+            this.NewsLetters = new HashSet<NewsLetter>();
         }
     
         public string TenantID { get; set; }
@@ -26,11 +26,11 @@ namespace MultipleAuthentication.DatabaseContext
         public string ClientSecret { get; set; }
         public string URL { get; set; }
         public Nullable<System.DateTime> Created { get; set; }
+        public string CreateBy { get; set; }
         public Nullable<System.DateTime> Modified { get; set; }
-        public string CreatedBy { get; set; }
         public string ModifiedBy { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Section> Sections { get; set; }
+        public virtual ICollection<NewsLetter> NewsLetters { get; set; }
     }
 }
