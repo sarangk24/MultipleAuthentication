@@ -52,6 +52,11 @@ namespace MultipleAuthentication.Controllers
         {
             if (ModelState.IsValid)
             {
+                newsLetter.CreatedBy = User.Identity.Name;
+                newsLetter.ModifiedBy = User.Identity.Name;
+                newsLetter.Created = DateTime.Now;
+                newsLetter.Modified = DateTime.Now;
+
                 db.NewsLetters.Add(newsLetter);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -87,6 +92,8 @@ namespace MultipleAuthentication.Controllers
             if (ModelState.IsValid)
             {
                 db.Entry(newsLetter).State = EntityState.Modified;
+                newsLetter.ModifiedBy = User.Identity.Name;
+                newsLetter.Modified = DateTime.Now;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }

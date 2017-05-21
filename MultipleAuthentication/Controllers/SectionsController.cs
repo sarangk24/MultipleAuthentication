@@ -48,10 +48,14 @@ namespace MultipleAuthentication.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "SectionID,SectionName,SectionDescription,Visible,Created,Modified,CreatedBy,ModifiedBy,NewsLetterID")] Section section)
+        public ActionResult Create([Bind(Include = "SectionName,SectionDescription,Visible,Created,Modified,CreatedBy,ModifiedBy,NewsLetterID")] Section section)
         {
             if (ModelState.IsValid)
             {
+                section.Created = DateTime.Now;
+                section.CreatedBy = User.Identity.Name;
+                section.Modified = DateTime.Now;
+                section.ModifiedBy = User.Identity.Name;
                 db.Sections.Add(section);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -87,6 +91,8 @@ namespace MultipleAuthentication.Controllers
             if (ModelState.IsValid)
             {
                 db.Entry(section).State = EntityState.Modified;
+                section.ModifiedBy = User.Identity.Name;
+                section.Modified = DateTime.Now;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
