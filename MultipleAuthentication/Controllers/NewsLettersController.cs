@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using MultipleAuthentication.DatabaseContext;
+using MultipleAuthentication.Helper;
 
 namespace MultipleAuthentication.Controllers
 {
@@ -17,7 +18,8 @@ namespace MultipleAuthentication.Controllers
         // GET: NewsLetters
         public ActionResult Index()
         {
-            var newsLetters = db.NewsLetters.Include(n => n.Tenant);
+            var tenantId = new TenantProvider().GetTenantDetails().TenantID;
+            var newsLetters = db.NewsLetters.Where(newsLetter=>newsLetter.TenantID==tenantId).Include(n => n.Tenant);
             return View(newsLetters.ToList());
         }
 

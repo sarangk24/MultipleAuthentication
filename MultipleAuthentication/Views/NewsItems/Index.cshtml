@@ -15,75 +15,41 @@
     <p>
         @Html.ActionLink("Create New", "Create")
     </p>
-    <table class="table">
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.NewsItemName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NewsItemDescription)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ActualLink)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Visible)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Created)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Modified)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedBy)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ModifiedBy)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Section.SectionName)
-            </th>
-            <th></th>
-        </tr>
+    <h1>@Model.First().Section.NewsLetter.Tenant.TenantName</h1>
     
-    @foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.NewsItemName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NewsItemDescription)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ActualLink)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Visible)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Created)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Modified)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedBy)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ModifiedBy)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Section.SectionName)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id=item.NewsItemID }) |
-                @Html.ActionLink("Details", "Details", new { id=item.NewsItemID }) |
-                @Html.ActionLink("Delete", "Delete", new { id=item.NewsItemID })
-            </td>
-        </tr>
+    @foreach (var item in Model.GroupBy(car => car.Section.NewsLetter).Select(g => g.First()).ToList())
+    {
+        <h2>@item.Section.NewsLetter.Name</h2>
+        foreach (var sectionItem in Model.Where(entity => entity.Section.NewsLetterID == item.Section.NewsLetterID).GroupBy(car => car.Section).Select(g => g.First()).ToList())
+        {
+            <ul id="accordion">
+                
+                   
+                
+                <li>
+                    <div class="section-name">@sectionItem.Section.SectionName</div>
+                    @foreach (var newsItem in Model.Select(x => x).Where(entity => entity.SectionID == sectionItem.SectionID))
+                    {
+
+
+                        <ul class="news-item-list-container">
+                            <li>
+                                Name :  @newsItem.NewsItemName
+                            </li>
+                            <li>
+                                Description :   @newsItem.NewsItemDescription
+                            </li>
+                            <li>
+                                Reference Links :   <a href="@newsItem.ActualLink">@newsItem.ActualLink</a>
+                            </li>
+                        </ul>
+
+                    }
+                </li>
+         </ul>
+        }
+
+
     }
-    
-    </table>
 </body>
 </html>

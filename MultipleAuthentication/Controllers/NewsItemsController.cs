@@ -6,7 +6,9 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using MoreLinq;
 using MultipleAuthentication.DatabaseContext;
+using MultipleAuthentication.Helper;
 
 namespace MultipleAuthentication.Controllers
 {
@@ -17,7 +19,9 @@ namespace MultipleAuthentication.Controllers
         // GET: NewsItems
         public ActionResult Index()
         {
-            var newsItems = db.NewsItems.Include(n => n.Section);
+            var tenantId = new TenantProvider().GetTenantDetails().TenantID;
+            var newsItems = db.NewsItems.Include(n => n.Section).Where(newsItem => newsItem.Section.NewsLetter.TenantID ==tenantId);
+               
             return View(newsItems.ToList());
         }
 
@@ -48,10 +52,14 @@ namespace MultipleAuthentication.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "NewsItemID,NewsItemName,NewsItemDescription,ActualLink,Visible,Created,Modified,CreatedBy,ModifiedBy,SectionID")] NewsItem newsItem)
+        public ActionResult Create([Bind(Include = "NewsItemName,NewsItemDescription,ActualLink,Visible,Created,Modified,CreatedBy,ModifiedBy,SectionID")] NewsItem newsItem)
         {
             if (ModelState.IsValid)
             {
+                newsItem.Created = DateTime.Now;
+                newsItem.CreatedBy = User.Identity.Name;
+                newsItem.Modified = DateTime.Now;
+                newsItem.ModifiedBy = User.Identity.Name;
                 db.NewsItems.Add(newsItem);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -86,6 +94,8 @@ namespace MultipleAuthentication.Controllers
         {
             if (ModelState.IsValid)
             {
+                newsItem.ModifiedBy = User.Identity.Name;
+                newsItem.Modified = DateTime.Now;
                 db.Entry(newsItem).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");

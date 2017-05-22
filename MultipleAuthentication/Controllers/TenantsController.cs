@@ -24,7 +24,7 @@ namespace MultipleAuthentication.Controllers
         {
             Models.Tenant tenantModel = ClaimsIdentityExtensions.GetTenant();
             if (db.Tenants.Where(tenant => tenant.TenantID == tenantModel.TenantID).Count() > 0)
-                return View(db.Tenants.ToList());
+                return this.RedirectToAction("Index","NewsItems");
             else
                 return this.RedirectToAction("AdminConsent", "Permissions");
 

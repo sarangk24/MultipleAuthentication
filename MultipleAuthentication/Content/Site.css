@@ -3,6 +3,18 @@
     padding-bottom: 20px;
 }
 
+.section-name{
+        font-size: x-large;
+    color: brown;
+
+}
+
+h2{
+
+    border-bottom-width:thick;
+    border-bottom:double
+}
+
 /* Set padding to keep content from hitting the edges */
 .body-content {
     padding-left: 15px;
@@ -30,3 +42,63 @@ textarea {
 .headline {
  font-size:1.4em;
 }
+
+/*accordion view style*/
+body, input{
+	font-family: Calibri, Arial;
+}
+
+.news-item-list-container
+{
+      border-bottom: black;
+    BORDER-BOTTOM-WIDTH: thick;
+    BORDER-BOTTOM-STYLE: dotted;
+}
+
+#accordion {
+	    list-style: none;
+    padding: 0 0 0 0;
+    width: 100%;
+   
+}
+#accordion li{
+	display: block;
+	/*background-color: #FF9947;*/
+	font-weight: bold;
+	margin: 13px;
+	cursor: pointer;
+	padding: 5 5 5 7px;
+	list-style: circle;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+}
+#accordion ul {
+	list-style: none;
+	padding: 0 0 0 0;
+	
+}
+
+
+
+ul#accordion  :hover {
+	list-style: none;
+	padding: 0 0 0 0;
+    
+}
+#accordion ul li{
+	font-weight: normal;
+	cursor: auto;
+	background-color:antiquewhite;
+	padding: 0 0 0 7px;
+    width:100%
+}
+#accordion a {
+	text-decoration: none;
+}
+#accordion a:hover {
+	text-decoration: underline;
+}
+
+/**/
+

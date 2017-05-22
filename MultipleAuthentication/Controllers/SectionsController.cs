@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using MultipleAuthentication.DatabaseContext;
+using MultipleAuthentication.Helper;
 
 namespace MultipleAuthentication.Controllers
 {
@@ -17,7 +18,8 @@ namespace MultipleAuthentication.Controllers
         // GET: Sections
         public ActionResult Index()
         {
-            var sections = db.Sections.Include(s => s.NewsLetter);
+            var tenantId = new TenantProvider().GetTenantDetails().TenantID;
+            var sections = db.Sections.Where(section=>section.NewsLetter.TenantID==tenantId).Include(s => s.NewsLetter);
             return View(sections.ToList());
         }
 
